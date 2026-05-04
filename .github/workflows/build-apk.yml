@@ -31,8 +31,16 @@ with:
 java-version: '17'
 distribution: 'temurin'
 
-name: Grant gradlew execute
-run: chmod +x gradlew
+name: Setup Gradle
+run: |
+cd /tmp
+wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
+unzip gradle-8.5-bin.zip
+export PATH=
+PATH:/tmp/gradle−8.5/bincd
+PATH:/tmp/gradle−8.5/bincdGITHUB_WORKSPACE
+gradle wrapper
+chmod +x gradlew
 
 name: Build APK
 run: ./gradlew assembleRelease
