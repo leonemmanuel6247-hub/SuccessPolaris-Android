@@ -11,36 +11,28 @@ steps:
 
 uses: actions/checkout@v4
 
-name: Setup Node
 uses: actions/setup-node@v4
 with:
 node-version: '20'
 
-name: Clone React
+name: Clone React app
 run: git clone https://github.com/leonemmanuel6247-hub/SuccessPolaris.git react-app
 
-name: Install and Build
-run: cd react-app && npm install && ./node_modules/.bin/vite build
+name: Install and Build React
+run: cd react-app && npm install && npx vite build
 
-name: Copy to assets
-run: cp -r react-app/dist/* app/src/main/assets/
+name: Copy build to assets
+run: mkdir -p app/src/main/assets && cp -r react-app/dist/* app/src/main/assets/
 
-name: Setup Java
 uses: actions/setup-java@v4
 with:
 java-version: '17'
 distribution: 'temurin'
 
-name: Setup Gradle
-run: |
-cd /tmp && wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip && unzip -q gradle-8.5-bin.zip
-export PATH=
-PATH:/tmp/gradle−8.5/bincd
-PATH:/tmp/gradle−8.5/bincdGITHUB_WORKSPACE && gradle wrapper --gradle-version 8.5
-chmod +x gradlew
-
 name: Build APK
-run: ./gradlew assembleRelease
+uses: gradle/gradle-build-action@v3
+with:
+arguments: assembleRelease
 
 name: Upload APK
 uses: actions/upload-artifact@v4
