@@ -1,4 +1,4 @@
-name: Build APK
+name: Build Native APK
 on:
 push:
 branches: [main]
@@ -11,28 +11,16 @@ steps:
 
 uses: actions/checkout@v4
 
-uses: actions/setup-node@v4
-with:
-node-version: '20'
-
-name: Clone React app
-run: git clone https://github.com/leonemmanuel6247-hub/SuccessPolaris.git react-app
-
-name: Install and Build React
-run: cd react-app && npm install && npx vite build
-
-name: Copy build to assets
-run: mkdir -p app/src/main/assets && cp -r react-app/dist/* app/src/main/assets/
-
 uses: actions/setup-java@v4
 with:
 java-version: '17'
 distribution: 'temurin'
 
+name: Make gradlew executable
+run: chmod +x gradlew
+
 name: Build APK
-uses: gradle/gradle-build-action@v3
-with:
-arguments: assembleRelease
+run: ./gradlew assembleRelease
 
 name: Upload APK
 uses: actions/upload-artifact@v4
