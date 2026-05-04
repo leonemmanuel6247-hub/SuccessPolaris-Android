@@ -20,7 +20,7 @@ name: Clone React
 run: git clone https://github.com/leonemmanuel6247-hub/SuccessPolaris.git react-app
 
 name: Install and Build
-run: cd react-app && npm install && npx vite build
+run: cd react-app && npm install && ./node_modules/.bin/vite build
 
 name: Copy to assets
 run: cp -r react-app/dist/* app/src/main/assets/
