@@ -1,0 +1,44 @@
+name: Build APK
+on:
+push:
+branches: [main]
+workflow_dispatch:
+
+jobs:
+build:
+runs-on: ubuntu-latest
+steps:
+
+uses: actions/checkout@v4
+
+name: Setup Node.js
+uses: actions/setup-node@v4
+with:
+node-version: '20'
+
+name: Clone React app
+run: git clone https://github.com/leonemmanuel6247-hub/SuccessPolaris.git react-app
+
+name: Build React
+run: cd react-app && npm install && npm run build
+
+name: Copy build to assets
+run: cp -r react-app/dist/* app/src/main/assets/
+
+name: Setup Java
+uses: actions/setup-java@v4
+with:
+java-version: '17'
+distribution: 'temurin'
+
+name: Grant gradlew execute
+run: chmod +x gradlew
+
+name: Build APK
+run: ./gradlew assembleRelease
+
+name: Upload APK
+uses: actions/upload-artifact@v4
+with:
+name: SuccessPolaris-APK
+path: app/build/outputs/apk/release/*.apk
